@@ -4,16 +4,19 @@ package aut.utcluj.isp.ex3;
  * @author stefan
  */
 public class AirplaneTicket {
-    private String id;
-    private Double price;
-    private String destination;
+    private final String id;
+    private final Double price;
+    private  String destination;
+
 
     public AirplaneTicket(String id, Double price, String destination) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.id = id;
+        this.price = price;
+        this.destination = destination;
     }
 
     public String getId() {
-        return id;
+       return id;
     }
 
     public Double getPrice() {
@@ -22,5 +25,9 @@ public class AirplaneTicket {
 
     public String getDestination() {
         return destination;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
     }
 }
