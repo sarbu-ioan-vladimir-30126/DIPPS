@@ -1,8 +1,10 @@
 package aut.utcluj.isp.ex4;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author stefan
@@ -106,7 +108,7 @@ public class AirplaneTicketController {
      * @return
      */
     public List<AirplaneTicket> filterTicketsByStatus(final TicketStatus status) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return tickets.stream().filter(p -> p.getStatus().equals(status)).collect(Collectors.toList());
     }
 
     /**
@@ -116,6 +118,6 @@ public class AirplaneTicketController {
      * @apiNote: only tickets with available name should be returned
      */
     public Map<String, List<AirplaneTicket>> groupTicketsByCustomerId() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return tickets.stream().collect(Collectors.groupingBy(AirplaneTicket::getCustomerId));
     }
 }
