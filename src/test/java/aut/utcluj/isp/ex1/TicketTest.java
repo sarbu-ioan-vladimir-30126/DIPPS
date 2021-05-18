@@ -3,6 +3,7 @@ package aut.utcluj.isp.ex1;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNotNull;
 
 /**
@@ -24,6 +25,7 @@ public class TicketTest {
         final Ticket firstInstance = new Ticket("TK-1234", "John", 20D);
         final Ticket secondInstance = new Ticket("TK-1234", "John", 20D);
 
-        assertEquals("Tickets should be equals", firstInstance, secondInstance);
+        //assertEquals("Tickets should be equals", firstInstance, secondInstance);
+        assertTrue("Tickets should be equals",firstInstance==secondInstance);
     }
 }
