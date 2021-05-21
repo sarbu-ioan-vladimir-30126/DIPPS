@@ -35,6 +35,9 @@ public class AirplaneTicket {
     public TicketStatus getStatus() {
         return status;
     }
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
+    }
 
     public void setStatus(TicketStatus status) {
         this.status = status;
