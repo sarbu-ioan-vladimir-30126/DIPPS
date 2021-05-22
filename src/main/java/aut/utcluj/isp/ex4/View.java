@@ -4,6 +4,8 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.TextListener;
 
 public class View extends JFrame {
 
@@ -24,6 +26,7 @@ public class View extends JFrame {
     //Give stuff
     private final JButton giveButton = new JButton("Give");
     private final JTextField giveToIdField = new JTextField();
+    private final JLabel customerFoundLabel = new JLabel("Search for user");
 
     //Cancel stuff
     private final JButton cancelTicketButton = new JButton("Cancel Ticket");
@@ -136,7 +139,7 @@ public class View extends JFrame {
         constraints.gridx = 2;
         constraints.gridy = giveRow;
         constraints.gridwidth = 1;
-        givePanel.add(new JLabel("Found/Not Found"), constraints);
+        givePanel.add(customerFoundLabel, constraints);
 
         constraints.gridx = 0;
         constraints.gridy = currentRow;
@@ -159,4 +162,58 @@ public class View extends JFrame {
         add(mainPanel);
     }
 
+    public String getCustomerId(){
+        return customerIdTextField.getText();
+    }
+
+    public String getDestinationSelection(){
+        return (String) destinationsComboBox.getSelectedItem();
+    }
+
+    public void setBuyPriceLabel(int price){
+        buyPriceLabel.setText(String.valueOf(price));
+    }
+
+    public String selectTicketFromTable() {
+        int row = ticketTable.getSelectedRow();
+        if(row != -1){
+            return (String) tableModel.getValueAt(row, 0);
+        }
+        return null;
+    }
+
+    public void giveTicket(){
+        String ticketId = selectTicketFromTable();
+        //Send ticketId to Model
+    }
+
+    public void updateCustomerFoundLabel(){
+        //get data from model
+        customerFoundLabel.setText("Found/Not Found");
+    }
+
+    public void addTicketToTable(){
+        //Get ticket from model
+        //tableModel.addRow();
+    }
+
+    public void addSubmitButtonListener(ActionListener actionListener){
+        customerIdButton.addActionListener(actionListener);
+    }
+
+    public void addBuyButtonListener(ActionListener actionListener){
+        buyTicketButton.addActionListener(actionListener);
+    }
+
+    public void addGiveButtonListener(ActionListener actionListener){
+        giveButton.addActionListener(actionListener);
+    }
+
+    public void addGiveToIdFieldListener(ActionListener actionListener){
+        giveToIdField.addActionListener(actionListener);
+    }
+
+    public void addCancelButtonListener(ActionListener actionListener){
+        cancelTicketButton.addActionListener(actionListener);
+    }
 }
