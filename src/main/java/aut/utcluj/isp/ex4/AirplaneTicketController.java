@@ -14,11 +14,15 @@ public class AirplaneTicketController {
      * Default number of tickets when a new instance is created
      */
     public static final int DEFAULT_NUMBER_OF_TICKETS = 10;
-    private List<AirplaneTicket> tickets;
+    private List<AirplaneTicket> tickets = new ArrayList<AirplaneTicket>();
 
     /**
      * Generate default tickets
      */
+    public AirplaneTicketController(){
+        generateTickets();
+    }
+    
     private void generateTickets() {
         for (int i = 0; i < DEFAULT_NUMBER_OF_TICKETS; i++) {
             String destination;
@@ -54,7 +58,12 @@ public class AirplaneTicketController {
      * @apiNote: this method should throw {@link NoTicketAvailableException} exception if ticket not found
      */
     public AirplaneTicket getTicketDetails(final String ticketId) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        for(AirplaneTicket at: tickets){
+            if(ticketId.equals(at.getId())){
+                return at;
+            }
+        }
+        throw new NoTicketAvailableException("Ticket not found!!");
     }
 
     /**
@@ -69,7 +78,26 @@ public class AirplaneTicketController {
      * {@link NoTicketAvailableException} - if destination exists but no ticket with NEW status available
      */
     public void buyTicket(final String destination, final String customerId) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        boolean flagDestination = true;
+        int flagStatus = 1;
+        for(AirplaneTicket at: tickets){
+            if(destination.equals(at.getDestination())){
+                flagDestination = false;
+                flagStatus = 2;
+                if(at.getStatus().equals(TicketStatus.NEW)){
+                    flagStatus = 3;
+                    at.setStatus(TicketStatus.ACTIVE);
+                    at.setCustomerId(customerId);
+                    break;
+                }
+            }
+        }
+        if(flagDestination){
+            throw new NoDestinationAvailableException("This destination doesn't exist!");
+        }
+        if(flagStatus == 2){
+            throw new NoTicketAvailableException("This ticket is not availble!Sorry, sold out");
+        }
     }
 
     /**
@@ -83,7 +111,25 @@ public class AirplaneTicketController {
      * {@link TicketNotAssignedException} - if ticket is not assigned to any user
      */
     public void cancelTicket(final String ticketId) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        boolean flagId = true;
+        int flagStatus = 1;
+        for(AirplaneTicket airplaneTicket: tickets){
+            if(ticketId.equals(airplaneTicket.getId())){
+                flagId=false;
+                flagStatus=2;
+                if(airplaneTicket.getStatus().equals(TicketStatus.ACTIVE)){
+                    flagStatus = 3;
+                    airplaneTicket.setStatus(TicketStatus.CANCELED);
+                    break;
+                }
+            }
+        }
+        if(flagId){
+            throw new NoTicketAvailableException("This ticket doesn't exist!");
+        }
+        if(flagStatus == 2){
+            throw new TicketNotAssignedException("This ticket is not assigned!");
+        }
     }
 
     /**
@@ -97,7 +143,25 @@ public class AirplaneTicketController {
      * {@link TicketNotAssignedException} - if ticket is not assigned to any user
      */
     public void changeTicketCustomerId(final String ticketId, final String customerId) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        boolean flagId = true;
+        int flagStatus = 1;
+        for(AirplaneTicket airplanTicket: tickets){
+            if(ticketId.equals(airplanTicket.getId())){
+                flagId=false;
+                flagStatus=2;
+                if(airplanTicket.getStatus().equals(TicketStatus.ACTIVE)){
+                    flagStatus = 3;
+                    airplanTicket.setCustomerId(customerId);
+                    break;
+                }
+            }
+        }
+        if(flagId){
+            throw new NoTicketAvailableException("This ticket doesn't exist!");
+        }
+        if(flagStatus == 2){
+            throw new TicketNotAssignedException("This ticket is not assigned!");
+        }
     }
 
     /**

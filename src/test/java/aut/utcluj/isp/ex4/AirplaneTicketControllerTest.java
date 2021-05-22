@@ -12,8 +12,8 @@ import java.util.Map;
 public class AirplaneTicketControllerTest {
     @Test
     public void shouldGenerateDefaultTickets() {
-        final AirplaneTicketController airplaneTicketController = new AirplaneTicketController();
-
+        final AirplaneTicketController airplaneTicketController = new AirplaneTicketController(); 
+        
         // asserts
         final List<AirplaneTicket> tickets = airplaneTicketController.getTickets();
         Assert.assertNotNull("Tickets should not be null", tickets);
