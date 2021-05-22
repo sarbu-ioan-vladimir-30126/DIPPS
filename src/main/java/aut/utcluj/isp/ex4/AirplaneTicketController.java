@@ -14,7 +14,7 @@ public class AirplaneTicketController {
      * Default number of tickets when a new instance is created
      */
     public static final int DEFAULT_NUMBER_OF_TICKETS = 10;
-    private List<AirplaneTicket> tickets = new ArrayList<AirplaneTicket>();
+    private final List<AirplaneTicket> tickets = new ArrayList<>();
 
     /**
      * Generate default tickets
@@ -26,7 +26,7 @@ public class AirplaneTicketController {
     private void generateTickets() {
         for (int i = 0; i < DEFAULT_NUMBER_OF_TICKETS; i++) {
             String destination;
-            Double price;
+            double price;
 
             if (i < 3) {
                 destination = "Cluj-Napoca";
@@ -54,7 +54,7 @@ public class AirplaneTicketController {
      * Get ticket details by ticket id
      *
      * @param ticketId - unique ticket id
-     * @return
+     * @return the ticket with the specified id
      * @apiNote: this method should throw {@link NoTicketAvailableException} exception if ticket not found
      */
     public AirplaneTicket getTicketDetails(final String ticketId) {
@@ -72,7 +72,6 @@ public class AirplaneTicketController {
      *
      * @param destination - destination
      * @param customerId  - customer name
-     * @return
      * @apiNote: this method should throw the following exceptions:
      * {@link NoDestinationAvailableException} - if destination not supported by AirplaneTicketController
      * {@link NoTicketAvailableException} - if destination exists but no ticket with NEW status available
@@ -105,7 +104,6 @@ public class AirplaneTicketController {
      * Status of the ticket should be set to {@link TicketStatus#CANCELED}
      *
      * @param ticketId - unique ticket id
-     * @return
      * @apiNote: this method should throw the following exceptions:
      * {@link NoTicketAvailableException} - if ticket with this id does not exist
      * {@link TicketNotAssignedException} - if ticket is not assigned to any user
@@ -137,7 +135,6 @@ public class AirplaneTicketController {
      *
      * @param ticketId   - unique ticket id
      * @param customerId - unique customer name
-     * @return
      * @apiNote: this method should throw the following exceptions:
      * {@link NoTicketAvailableException} - if ticket with this id does not exist
      * {@link TicketNotAssignedException} - if ticket is not assigned to any user
@@ -169,7 +166,7 @@ public class AirplaneTicketController {
      * An empty list should be returned if no tickets available with desired status
      *
      * @param status - ticket status
-     * @return
+     * @return a list of tickets with the specified status
      */
     public List<AirplaneTicket> filterTicketsByStatus(final TicketStatus status) {
         return tickets.stream().filter(p -> p.getStatus().equals(status)).collect(Collectors.toList());
@@ -182,6 +179,8 @@ public class AirplaneTicketController {
      * @apiNote: only tickets with available name should be returned
      */
     public Map<String, List<AirplaneTicket>> groupTicketsByCustomerId() {
-        return tickets.stream().collect(Collectors.groupingBy(AirplaneTicket::getCustomerId));
+        return tickets.stream()
+                .filter(t -> t.getCustomerId() != null)
+                .collect(Collectors.groupingBy(AirplaneTicket::getCustomerId));
     }
 }
