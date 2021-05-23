@@ -66,6 +66,19 @@ public class AirplaneTicketController {
         throw new NoTicketAvailableException("Ticket not found!!");
     }
 
+    public double getTicketPrice(String destination){
+        if("Cluj-Napoca".equals(destination)){
+            return 10d;
+        }
+        else if("Baia Mare".equals(destination)){
+            return 20d;
+        }
+        else if("Timisoara".equals(destination)){
+            return 15d;
+        }
+        return 0d;
+    }
+
     /**
      * Buy ticket with specific destination
      * Ticket information should be updated: customer name and status {@link TicketStatus#ACTIVE}
@@ -95,7 +108,7 @@ public class AirplaneTicketController {
             throw new NoDestinationAvailableException("This destination doesn't exist!");
         }
         if(flagStatus == 2){
-            throw new NoTicketAvailableException("This ticket is not availble!Sorry, sold out");
+            throw new NoTicketAvailableException("This ticket is not available!Sorry, sold out");
         }
     }
 
