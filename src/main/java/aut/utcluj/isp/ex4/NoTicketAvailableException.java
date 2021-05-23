@@ -6,7 +6,7 @@ package aut.utcluj.isp.ex4;
 public class NoTicketAvailableException extends RuntimeException {
 
     public NoTicketAvailableException(String error) {
-        System.out.println(error);
+        super(error);
     }
     
 }

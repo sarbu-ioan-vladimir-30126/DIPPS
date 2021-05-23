@@ -15,16 +15,16 @@ public class Main {
             // If Nimbus is not available, fall back to cross-platform
             try {
                 UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-            } catch (Exception ignored) {
-            }
+            } catch (Exception ignored) {}
         }
 
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                View view = new View();
-                view.setVisible(true);
-            }
+        SwingUtilities.invokeLater(() -> {
+            Model model = new Model();
+            View view = new View();
+
+            @SuppressWarnings("unused")
+            Controller controller = new Controller(model, view);
+            view.setVisible(true);
         });
 
     }

@@ -5,18 +5,18 @@ import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.awt.event.TextListener;
+import java.awt.event.KeyListener;
+import java.util.List;
 
 public class View extends JFrame {
 
     private final JTextField customerIdTextField = new JTextField();
-    private final JLabel customerIdLabel = new JLabel("Enter ID");
     private final JButton customerIdButton = new JButton("Submit");
 
     //Buy stuff
-    private final JComboBox<String> destinationsComboBox = new JComboBox<>(new String[]{"Cluj", "Arad", "Sighisoara"});
+    private final JComboBox<String> destinationsComboBox = new JComboBox<>(new String[]{"Cluj-Napoca", "Baia Mare", "Timisoara"});
     private final JButton buyTicketButton = new JButton("Buy Ticket");
-    private final JLabel buyPriceLabel = new JLabel("1000");
+    private final JLabel buyPriceLabel = new JLabel("Price will be shown here");
 
     //Table stuff
     private final JTable ticketTable = new JTable();
@@ -29,7 +29,7 @@ public class View extends JFrame {
     private final JLabel customerFoundLabel = new JLabel("Search for user");
 
     //Cancel stuff
-    private final JButton cancelTicketButton = new JButton("Cancel Ticket");
+    private final JButton cancelTicketButton = new JButton("Cancel selected Ticket");
 
     public View(){
         GridBagLayout layout = new GridBagLayout();
@@ -47,6 +47,7 @@ public class View extends JFrame {
         constraints.gridx = 0;
         constraints.gridy = currentRow;
         constraints.gridwidth = 2;
+        JLabel customerIdLabel = new JLabel("Enter ID");
         mainPanel.add(customerIdLabel, constraints);
         constraints.gridwidth = 1;
 
@@ -170,10 +171,6 @@ public class View extends JFrame {
         return (String) destinationsComboBox.getSelectedItem();
     }
 
-    public void setBuyPriceLabel(int price){
-        buyPriceLabel.setText(String.valueOf(price));
-    }
-
     public String selectTicketFromTable() {
         int row = ticketTable.getSelectedRow();
         if(row != -1){
@@ -182,19 +179,35 @@ public class View extends JFrame {
         return null;
     }
 
-    public void giveTicket(){
-        String ticketId = selectTicketFromTable();
-        //Send ticketId to Model
+    public void setCustomerFoundLabel(String newText){
+        customerFoundLabel.setText(newText);
     }
 
-    public void updateCustomerFoundLabel(){
-        //get data from model
-        customerFoundLabel.setText("Found/Not Found");
+    public void addTicketsToTable(List<AirplaneTicket> airplaneTicketList){
+        while (tableModel.getRowCount() > 0){
+            tableModel.removeRow(0);
+        }
+        if(airplaneTicketList != null) {
+            for (AirplaneTicket airplaneTicket : airplaneTicketList) {
+                String[] ticketDetails = {airplaneTicket.getId(), airplaneTicket.getDestination(), airplaneTicket.getStatus().toString()};
+                tableModel.addRow(ticketDetails);
+            }
+        }
+        tableModel.fireTableDataChanged();
     }
 
-    public void addTicketToTable(){
-        //Get ticket from model
-        //tableModel.addRow();
+    public void removeSelectedTicketFromTable(){
+        tableModel.removeRow(ticketTable.getSelectedRow());
+        tableModel.fireTableDataChanged();
+    }
+
+    public String getGiveToUsedId(){
+        return giveToIdField.getText();
+    }
+
+    public void updatePriceLabel(String newStr){
+        if(newStr.length() < 7) buyPriceLabel.setText(newStr + " €");
+        else buyPriceLabel.setText(newStr);
     }
 
     public void addSubmitButtonListener(ActionListener actionListener){
@@ -209,11 +222,15 @@ public class View extends JFrame {
         giveButton.addActionListener(actionListener);
     }
 
-    public void addGiveToIdFieldListener(ActionListener actionListener){
-        giveToIdField.addActionListener(actionListener);
+    public void addGiveToIdFieldListener(KeyListener keyListener){
+        giveToIdField.addKeyListener(keyListener);
     }
 
     public void addCancelButtonListener(ActionListener actionListener){
         cancelTicketButton.addActionListener(actionListener);
+    }
+
+    public void addDestinationBoxListener(ActionListener actionListener){
+        destinationsComboBox.addActionListener(actionListener);
     }
 }
